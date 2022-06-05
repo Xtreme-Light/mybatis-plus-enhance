@@ -37,7 +37,6 @@ public abstract class AbstractMultiSqlInjector implements ISqlInjector {
         final String className = mapperClass.toString();
         Set<String> mapperRegistryCache = GlobalConfigUtils.getMapperRegistryCache(builderAssistant.getConfiguration());
         if (!mapperRegistryCache.contains(className)) {
-          // TODO 给表一个别名
           TableInfo tableInfo1 = TableInfoHelper.initTableInfo(builderAssistant, aClass1);
           final String t1 = camelPickAlias(tableInfo1, 1);
           final TableInfoAlias tableInfoAliasT1 = new TableInfoAlias(t1,tableInfo1);
@@ -51,7 +50,7 @@ public abstract class AbstractMultiSqlInjector implements ISqlInjector {
             methodList.forEach(m -> m.inject(builderAssistant, mapperClass, aClass1, aClass2,
                 tableInfoAliasT1, tableInfoAliasT2,aClass3));
           } else {
-            logger.debug(mapperClass.toString() + ", No effective injection method was found.");
+            logger.debug(mapperClass + ", No effective injection method was found.");
           }
           mapperRegistryCache.add(className);
         }
