@@ -13,8 +13,15 @@ import com.baomidou.mybatisplus.core.toolkit.sql.SqlScriptUtils;
 import com.light.mybatis.enhance.multi.query.constant.MultiConstants;
 import com.light.mybatis.enhance.multi.query.enums.MultiSqlMethod;
 import com.light.mybatis.enhance.multi.query.metadata.TableInfoAlias;
+import com.light.mybatis.enhance.multi.relation.TableMapperFacade;
+import com.light.mybatis.enhance.multi.relation.impl.DefaultTableMapperFactory;
+import com.light.mybatis.enhance.multi.relation.metadata.MapperKey;
+import com.light.mybatis.enhance.multi.relation.metadata.TableMap;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
@@ -86,7 +93,10 @@ public abstract class AbstractMultiMethod implements MultiConstants {
     /* 假设存在用户自定义的 resultMap 映射返回 */
     String selectColumns = ASTERISK;
     // TODO 这里应该根据 A 表对象 B 表对象 和 返回对象三者的关系直接获取到选择的map
-
+    DefaultTableMapperFactory mapperFactory = new DefaultTableMapperFactory.Builder().build();
+    TableMapperFacade mapper = mapperFactory.getTableMapperFacade();
+    final TableMap<Object, Object, Object> tableMap = mapper.getTableMap(tableInfo1.getTableInfo(),
+        tableInfo2.getTableInfo(), returnClass);
     if (!queryWrapper) {
       return selectColumns;
     }

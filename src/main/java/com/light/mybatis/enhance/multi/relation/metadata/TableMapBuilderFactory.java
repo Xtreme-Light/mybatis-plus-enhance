@@ -60,50 +60,40 @@ public abstract class TableMapBuilderFactory {
     this.defaults = defaults;
   }
 
-  /**
-   * Verifies whether the factory has been properly initialized
-   *
-   * @return true if the factory has been initialized
-   */
-  public synchronized boolean isInitialized() {
-    return propertyResolver != null && defaults != null;
-  }
 
 
   protected abstract <T1, T2, R> TableMapBuilder<T1, T2, R> newClassMapBuilder(Class<T1> t1,
       Class<T2> t2, Class<R> rClass,
       String t1Field,
       String t2Field,
-      TableMapperFactory tableMapperFactory, PropertyResolverStrategy propertyResolver,
-      DefaultFieldMapper[] defaults);
+      String t1Alias,
+      String t2Alias,
+      TableMapperFactory tableMapperFactory, PropertyResolverStrategy propertyResolver);
 
   public <T1, T2, R> TableMapBuilderFactory chooseTableMapBuilderFactory(Class<T1> t1, Class<T2> t2,
       Class<R> resultClass) {
-    if (appliesTo(t1, t2, resultClass)) {
-      return this;
-    }
     return nextTableMapBuilderFactory == null ? null
         : nextTableMapBuilderFactory.chooseTableMapBuilderFactory(t1, t2, resultClass);
-  }
-
-  protected <T1, T2, R> boolean appliesTo(Class<T1> t1, Class<T2> t2, Class<R> rClass) {
-    return false;
   }
 
   public <T2, R, T1> TableMapBuilder<T1, T2, R> map(Class<T1> t1, Class<T2> t2,
       Class<R> resultClass,
       String t1Field,
-      String t2Field) {
-    return getNewTableMapBuilder(t1, t2, resultClass, t1Field, t2Field);
+      String t2Field,
+      String t1Alias,
+      String t2Alias) {
+    return getNewTableMapBuilder(t1, t2, resultClass, t1Field, t2Field,t1Alias,t2Alias);
   }
 
   private synchronized <T1, T2, R> TableMapBuilder<T1, T2, R> getNewTableMapBuilder(Class<T1> t1,
       Class<T2> t2,
       Class<R> resultClass,
       String t1Field,
-      String t2Field) {
-    return newClassMapBuilder(t1, t2, resultClass, t1Field, t2Field, tableMapperFactory,
-        propertyResolver, defaults);
+      String t2Field,
+      String t1Alias,
+      String t2Alias) {
+    return newClassMapBuilder(t1, t2, resultClass, t1Field, t2Field,t1Alias,t2Alias, tableMapperFactory,
+        propertyResolver);
   }
 
   public void setMapperFactory(DefaultTableMapperFactory tableMapperFactory) {

@@ -11,6 +11,13 @@ public interface TableMapperFactory {
   <T1, T2,R> TableMapBuilder<T1, T2,R> tableMap(Class<T1> t1, Class<T2> t2,
       Class<R> resultClas,
       String t1Field,
+      String t2Field,
+      String t1Alias,
+      String t2Alias);
+
+  <T1, T2,R> TableMapBuilder<T1, T2,R> tableMap(Class<T1> t1, Class<T2> t2,
+      Class<R> resultClas,
+      String t1Field,
       String t2Field);
 
   <T1, T2,R> void registerTableMap(TableMapBuilder<T1, T2,R> builder);

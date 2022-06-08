@@ -1,0 +1,40 @@
+<script>
+  <if test="ew != null and ew.sqlFirst != null">
+    ${ew.sqlFirst}
+  </if>
+  SELECT
+  <choose>
+    <when test="ew != null and ew.sqlSelect != null">
+      ${ew.sqlSelect}
+    </when>
+    <otherwise>*</otherwise>
+  </choose>
+  FROM tenant_info t1 LEFT JOIN user_info t2
+  <if test="ew != null">
+    <where>
+      <if test="ew.t1 != null">
+        <if test="ew.t1['id'] != null">t1.id=#{ew.t1.id}</if>
+        <if test="ew.t1['name'] != null">AND t1.`name`=#{ew.t1.name}</if>
+        <if test="ew.t1['type'] != null">AND t1.`type`=#{ew.t1.type}</if>
+        <if test="ew.t1['createTime'] != null">AND t1.create_time=#{ew.t1.createTime}</if>
+      </if>
+      <if test="ew.t2 != null">
+        <if test="ew.t2['id'] != null">t2.id=#{ew.t2.id}</if>
+        <if test="ew.t2['account'] != null">AND t2.`account`=#{ew.t2.account}</if>
+        <if test="ew.t2['name'] != null">AND t2.`name`=#{ew.t2.name}</if>
+        <if test="ew.t2['createTime'] != null">AND t2.create_time=#{ew.t2.createTime}</if>
+        <if test="ew.t2['tenantId'] != null">AND t2.tenant_id=#{ew.t2.tenantId}</if>
+      </if>
+      <if test="ew.sqlSegment != null and ew.sqlSegment != '' and ew.nonEmptyOfWhere">
+        <if test="ew.nonEmptyOfEntity and ew.nonEmptyOfNormal">AND</if>
+        ${ew.sqlSegment}
+      </if>
+    </where>
+    <if test="ew.sqlSegment != null and ew.sqlSegment != '' and ew.emptyOfWhere">
+      ${ew.sqlSegment}
+    </if>
+  </if>
+  <if test="ew != null and ew.sqlComment != null">
+    ${ew.sqlComment}
+  </if>
+</script>

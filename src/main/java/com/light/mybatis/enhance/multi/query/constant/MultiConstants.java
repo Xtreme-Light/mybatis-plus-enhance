@@ -148,6 +148,10 @@ public interface MultiConstants extends StringPool {
    */
   String WHERE = "WHERE";
   /**
+   * on
+   */
+  String ON = "on";
+  /**
    * limit
    */
   String LIMIT = "LIMIT";

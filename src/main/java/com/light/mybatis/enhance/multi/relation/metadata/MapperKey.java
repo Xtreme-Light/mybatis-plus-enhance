@@ -1,5 +1,7 @@
 package com.light.mybatis.enhance.multi.relation.metadata;
 
+import java.util.Objects;
+
 public class MapperKey {
 
   private final Class<Object> t1;
@@ -23,5 +25,23 @@ public class MapperKey {
 
   public Class<Object> getResultClass() {
     return resultClass;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    MapperKey mapperKey = (MapperKey) o;
+    return Objects.equals(t1, mapperKey.t1) && Objects.equals(t2, mapperKey.t2)
+        && Objects.equals(resultClass, mapperKey.resultClass);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(t1, t2, resultClass);
   }
 }
